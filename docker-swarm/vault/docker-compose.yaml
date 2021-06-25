@@ -1,0 +1,24 @@
+version: '3'
+services:
+  vault:
+    image: vault:1.7.3
+    ports:
+      - 8200:8200
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 0.5G
+    volumes:
+      - /Users/lk/vault/local.json:/vault/config/local.json
+      - vault-data:/vault/file
+    cap_add:
+      - IPC_LOCK
+    entrypoint: vault server -config=/vault/config/local.json
+    healthcheck:
+      test: "exit 0"
+volumes:
+  vault-data:
